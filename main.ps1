@@ -5,19 +5,15 @@ Affichage des informations générale sur la station : matériel, Bios, version 
 #>
 
 
-
-
 $compname = (Get-CimInstance -ClassName Win32_ComputerSystem).name
 $Date = Get-Date
 
 
 $name = "<h1>Computer name: $compname</h1>"
 
-
-
 $os = Get-CimInstance Win32_OperatingSystem | ConvertTo-Html -As List -Property status,version,name,Manufacturer,InstallDate,LastBootUpTime -Fragment -PreContent "<h2>Operating System</h2>"
-$ip = Get-NetIPAddress | ConvertTo-Html -Property IPAddress -Fragment
-$mac =  Get-NetAdapter | ConvertTo-Html -Property DeviceId -Fragment
+$ip = Get-NetIPAddress | ConvertTo-Html -Property IPAddress -Fragment 
+$mac =  Get-NetAdapter | ConvertTo-Html -Property DeviceId -Fragment 
 $hardware = Get-CimInstance CIM_ComputerSystem | ConvertTo-Html -As List -Property Model -Fragment -PreContent "<h2>Hardware</h2>"
 
 <#
@@ -25,7 +21,7 @@ Affichage des informations sur les comptes locaux (privilèges attribués à cha
 utilisateur, date de la dernière connexion, …etc) et vérification des paramètres des comptes.
 #>
 
-$Users = Get-LocalUser | Select * | ConvertTo-Html -As List -Fragment -PreContent "<h2>Users</h2>"
+$user = Get-LocalUser | Select * | ConvertTo-Html -As Table -Property FullName,Description,Enabled,LastLogon -Fragment -PreContent "<h2>User</h2>"
 
 <#
 Afficher les paramètres de la vie privée, par exemple : Wifi sense (si version
@@ -102,5 +98,5 @@ $header = @"
 </style>
 "@
 
-$Report = ConvertTo-HTML -Body "$name $os $ip $mac $hardware $Users" -Title "Report - $Date" -Head $header
-$Report | Out-File .\Report-$compname-$Date.html
+$Report = ConvertTo-HTML -Body "$name $os $ip $mac $hardware $user" -Title "Report - $Date" -Head $header
+$Report | Out-File C:\Users\clemg\Report.html
