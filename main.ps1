@@ -40,12 +40,7 @@ Affichage des services à arrêter en application du principe de minimisation.
 Durcissement de la couche réseau, protocole TLS et paramètres de cryptographie.
 #>
 
-$bar = @"
-<div class="or-spacer">
-  <div class="mask"></div>
-  <span><i></i></span>
-</div>
-"@
+$bar = "<hr class='separator separator--line' />"
 
 $header = @"
 <style>
@@ -103,44 +98,50 @@ $header = @"
 
     }
 
-    .or-spacer {
-  margin-top:100px; margin-left:100px; width:400px;
-  position:relative;
+    $separator-size: 5px;
+    $separator-border-style: solid;
+    $separator-border-color: #bada55;
+    $separator-space-top: 25px;
+    $separator-space-bottom: 80px;
 
-  .mask {
-    overflow:hidden; height:20px;
-    &:after {
-      content:'';
-      display:block; margin:-25px auto 0;
-      width:100%; height:25px;
-      border-radius:125px / 12px;
-      box-shadow:0 0 8px black;
+    .separator {
+        margin-top: $separator-space-top;
+        margin-bottom: $separator-space-bottom;
+        border: 0;
+        }
+
+        .separator--line {
+        border: 0;
+        border-bottom: $separator-size $separator-border-style $separator-border-color;
+
+        width: 0;
+        animation: separator-width 1s ease-out forwards;
+        }
+        @keyframes separator-width {
+        0% {
+            width: 0;
+        }
+        100% {
+            width: 100%;
+        }
     }
-  }
-  span {
-    $size:50px;
-    width:$size; height:$size;
-    position:absolute;
-    bottom:100%; margin-bottom:-$size/2;
-    left:50%; margin-left:-$size/2;
-    border-radius:100%;
-    box-shadow:0 2px 4px #999;
-    background:white;
-  }
-  span i {
-    $offset:4px;
-    position:absolute;
-    top:$offset; bottom:$offset;
-    left:$offset; right:$offset;
-    border-radius:100%;
-    border:1px dashed #aaa;
 
-    text-align:center;
-    line-height:40px;
-    font-style:normal;
-    color:#999;
-  }
-}
+    @keyframes dot-move-right {
+    0% {
+        left: 0;
+    }
+    100% {
+        left: 32px;
+    }
+    }
+    @keyframes dot-move-left {
+    0% {
+        left: 0;
+    }
+    100% {
+        left: -32px;
+    }
+    }
 </style>
 "@
 
