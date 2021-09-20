@@ -4,24 +4,19 @@
 Affichage des informations générale sur la station : matériel, Bios, version OS, …
 #>
 
-$os = Get-CimInstance Win32_OperatingSystem
-$hardware = Get-CimInstance CIM_ComputerSystem
-$vm = get-wmiobject -computer LocalHost win32_computersystem
-$name = (Get-CimInstance -ClassName Win32_ComputerSystem).Name
-$cap = Get-CimInstance -ClassName CIM_OperatingSystem
 
-Write-Host "Hostname : $($name)"
-Write-Host "status : $($os.status)"
-Write-Host ”OS Version: $($os.version)"
-Write-Host "OSCaption : $($cap.Caption )"
-Write-Host "OS architecture : $($os.name)"
-Write-Host "IP Address $((Get-NetIPAddress).IPAddress)"
-Write-Host "Mac Address : $((Get-NetAdapter).DeviceId)"
-Write-Host "Model : $($hardware.Model)"
-Write-Host "Manufacturer : $($os.Manufacturer)"
-Write-Host "DateBuild : $($os.InstallDate)"
-Write-Host "Last boot : $($os.LastBootUpTime)"
 
+
+$compname = (Get-CimInstance -ClassName Win32_ComputerSystem).name
+$Date = Get-Date
+
+
+$name = "<h1>Computer name: $compname</h1>"
+
+$os = Get-CimInstance Win32_OperatingSystem | ConvertTo-Html -As List -Property status,version,name,Manufacturer,InstallDate,LastBootUpTime -Fragment -PreContent "<h2>Operating System</h2>"
+$ip = Get-NetIPAddress | ConvertTo-Html -As List -Property IPAddress -Fragment -PreContent "<h2>IP Address</h2>"
+$mac =  Get-NetAdapter | ConvertTo-Html -As List -Property DeviceId -Fragment -PreContent "<h2>MAC Address</h2>"
+$hardware = Get-CimInstance CIM_ComputerSystem | ConvertTo-Html -As List -Property Model -Fragment -PreContent "<h2>Hardware</h2>"
 
 <#
 Affichage des informations sur les comptes locaux (privilèges attribués à chaque
@@ -44,4 +39,64 @@ Affichage des services à arrêter en application du principe de minimisation.
 <#
 Durcissement de la couche réseau, protocole TLS et paramètres de cryptographie.
 #>
-s
+
+$header = @"
+<style>
+
+    h1 {
+
+        font-family: Arial, Helvetica, sans-serif;
+        color: #e68a00;
+        font-size: 28px;
+
+    }
+
+
+    h2 {
+
+        font-family: Arial, Helvetica, sans-serif;
+        color: #000099;
+        font-size: 16px;
+
+    }
+
+
+
+   table {
+		font-size: 12px;
+		border: 0px;
+		font-family: Arial, Helvetica, sans-serif;
+	}
+
+    td {
+		padding: 4px;
+		margin: 0px;
+		border: 0;
+	}
+
+    th {
+        background: #395870;
+        background: linear-gradient(#49708f, #293f50);
+        color: #fff;
+        font-size: 11px;
+        text-transform: uppercase;
+        padding: 10px 15px;
+        vertical-align: middle;
+	}
+
+    tbody tr:nth-child(even) {
+        background: #f0f0f2;
+    }
+
+        #CreationDate {
+
+        font-family: Arial, Helvetica, sans-serif;
+        color: #ff3300;
+        font-size: 12px;
+
+    }
+</style>
+"@
+
+$Report = ConvertTo-HTML -Body "$name $os $ip $mac $hardware" -Title "Report - $Date" -Head $header
+$Report | Out-File .\Report-$compname-$Date.html
