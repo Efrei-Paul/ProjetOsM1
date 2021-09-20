@@ -8,15 +8,15 @@ $os = Get-CimInstance Win32_OperatingSystem
 $hardware = Get-CimInstance CIM_ComputerSystem
 $vm = get-wmiobject -computer LocalHost win32_computersystem
 $name = (Get-CimInstance -ClassName Win32_ComputerSystem).Name
+$cap = Get-CimInstance -ClassName CIM_OperatingSystem
 
 Write-Host "Hostname : $($name)"
-Write-Host "staus : $($os.status)"
+Write-Host "status : $($os.status)"
 Write-Host ”OS Version: $($os.version)"
-Write-Host "OSCaption : $($os.architecture)"
+Write-Host "OSCaption : $($cap.Caption )"
 Write-Host "OS architecture : $($os.name)"
 Write-Host "IP Address $((Get-NetIPAddress).IPAddress)"
 Write-Host "Mac Address : $((Get-NetAdapter).DeviceId)"
-Write-Host "VM : $($vm.IsVirtual)"
 Write-Host "Model : $($hardware.Model)"
 Write-Host "Manufacturer : $($os.Manufacturer)"
 Write-Host "DateBuild : $($os.InstallDate)"
