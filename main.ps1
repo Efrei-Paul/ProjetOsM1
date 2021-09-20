@@ -13,9 +13,11 @@ $Date = Get-Date
 
 $name = "<h1>Computer name: $compname</h1>"
 
+
+
 $os = Get-CimInstance Win32_OperatingSystem | ConvertTo-Html -As List -Property status,version,name,Manufacturer,InstallDate,LastBootUpTime -Fragment -PreContent "<h2>Operating System</h2>"
-$ip = Get-NetIPAddress | ConvertTo-Html -As List -Property IPAddress -Fragment -PreContent "<h2>IP Address</h2>"
-$mac =  Get-NetAdapter | ConvertTo-Html -As List -Property DeviceId -Fragment -PreContent "<h2>MAC Address</h2>"
+$ip = Get-NetIPAddress | ConvertTo-Html -Property IPAddress -Fragment
+$mac =  Get-NetAdapter | ConvertTo-Html -Property DeviceId -Fragment
 $hardware = Get-CimInstance CIM_ComputerSystem | ConvertTo-Html -As List -Property Model -Fragment -PreContent "<h2>Hardware</h2>"
 
 <#
@@ -23,7 +25,7 @@ Affichage des informations sur les comptes locaux (privilèges attribués à cha
 utilisateur, date de la dernière connexion, …etc) et vérification des paramètres des comptes.
 #>
 
-Get-LocalUser | Select *
+$Users = Get-LocalUser | Select * | ConvertTo-Html -As List -Fragment -PreContent "<h2>Users</h2>"
 
 <#
 Afficher les paramètres de la vie privée, par exemple : Wifi sense (si version
@@ -100,5 +102,5 @@ $header = @"
 </style>
 "@
 
-$Report = ConvertTo-HTML -Body "$name $os $ip $mac $hardware" -Title "Report - $Date" -Head $header
+$Report = ConvertTo-HTML -Body "$name $os $ip $mac $hardware $Users" -Title "Report - $Date" -Head $header
 $Report | Out-File .\Report-$compname-$Date.html
