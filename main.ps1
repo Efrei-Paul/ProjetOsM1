@@ -40,6 +40,13 @@ Affichage des services à arrêter en application du principe de minimisation.
 Durcissement de la couche réseau, protocole TLS et paramètres de cryptographie.
 #>
 
+$bar = @"
+<div class="or-spacer">
+  <div class="mask"></div>
+  <span><i></i></span>
+</div>
+"@
+
 $header = @"
 <style>
 
@@ -95,8 +102,47 @@ $header = @"
         font-size: 12px;
 
     }
+
+    .or-spacer {
+  margin-top:100px; margin-left:100px; width:400px;
+  position:relative;
+
+  .mask {
+    overflow:hidden; height:20px;
+    &:after {
+      content:'';
+      display:block; margin:-25px auto 0;
+      width:100%; height:25px;
+      border-radius:125px / 12px;
+      box-shadow:0 0 8px black;
+    }
+  }
+  span {
+    $size:50px;
+    width:$size; height:$size;
+    position:absolute;
+    bottom:100%; margin-bottom:-$size/2;
+    left:50%; margin-left:-$size/2;
+    border-radius:100%;
+    box-shadow:0 2px 4px #999;
+    background:white;
+  }
+  span i {
+    $offset:4px;
+    position:absolute;
+    top:$offset; bottom:$offset;
+    left:$offset; right:$offset;
+    border-radius:100%;
+    border:1px dashed #aaa;
+
+    text-align:center;
+    line-height:40px;
+    font-style:normal;
+    color:#999;
+  }
+}
 </style>
 "@
 
-$Report = ConvertTo-HTML -Body "$name $os $ip $mac $hardware $user" -Title "Report - $Date" -Head $header
+$Report = ConvertTo-HTML -Body "$name $os $bar $ip $bar $mac $bar $hardware $bar $user" -Title "Report - $Date" -Head $header
 $Report | Out-File C:\Users\clemg\Report.html
