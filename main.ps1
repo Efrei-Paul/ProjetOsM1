@@ -4,13 +4,12 @@
 Affichage des informations générale sur la station : matériel, Bios, version OS, …
 #>
 
-param([String]$name)
-
 $os = Get-CimInstance Win32_OperatingSystem
 $hardware = Get-CimInstance CIM_ComputerSystem
 $vm = get-wmiobject -computer LocalHost win32_computersystem
+$name = (Get-CimInstance -ClassName Win32_ComputerSystem).Name
 
-Write-Host "Hostname : $name"
+Write-Host "Hostname : $($name)"
 Write-Host "staus : $($os.status)"
 Write-Host ”OS Version: $($os.version)"
 Write-Host "OSCaption : $($os.architecture)"
