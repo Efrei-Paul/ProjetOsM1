@@ -12,8 +12,8 @@ $Date = Get-Date
 $name = "<h1>Computer name: $compname</h1>"
 
 $os = Get-CimInstance Win32_OperatingSystem | ConvertTo-Html -As List -Property status,version,name,Manufacturer,InstallDate,LastBootUpTime -Fragment -PreContent "<h2>Operating System</h2>"
-$ip = Get-NetIPAddress | ConvertTo-Html -Property IPAddress -Fragment 
-$mac =  Get-NetAdapter | ConvertTo-Html -Property DeviceId -Fragment 
+$ip = Get-NetIPAddress | ConvertTo-Html -Property IPAddress -Fragment
+$mac =  Get-NetAdapter | ConvertTo-Html -Property DeviceId -Fragment
 $hardware = Get-CimInstance CIM_ComputerSystem | ConvertTo-Html -As List -Property Model -Fragment -PreContent "<h2>Hardware</h2>"
 
 <#
