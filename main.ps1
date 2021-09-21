@@ -34,6 +34,10 @@ to peer (Windows Update P2P), traçage (Diagnostics Tracking Service), accès ca
 et microphone, …etc.
 #>
 
+$Webcam = Get-PnpDevice -Class "Webcam" | select * | ConvertTo-Html -As Table -Fragment -PreContent "<h3>Webcam :</h3>"
+
+$Private = ConvertTo-HTML -Body "$Webcam"
+
 <#
 Affichage des services à arrêter en application du principe de minimisation.
 #>
@@ -134,5 +138,5 @@ $header = @"
 "@
 
 <#Html et sauvegarde#>
-$Report = ConvertTo-HTML -Body "$name $General $Users" -Title "Report - $Date" -Head $header
+$Report = ConvertTo-HTML -Body "$name $General $Users $Private" -Title "Report - $Date" -Head $header
 $Report | Out-File C:\Users\user\Report.html
