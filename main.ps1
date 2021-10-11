@@ -5,9 +5,9 @@ $compname = (Get-CimInstance -ClassName Win32_ComputerSystem).name
 $Date = Get-Date
 
 
-<#
-1. General : Nom Hardware OS IP Mac ...
-#>
+################### GENERAL Informations ###################
+
+
 $name = "<h1>Computer name: $compname</h1>"
 
 $os = Get-CimInstance Win32_OperatingSystem | ConvertTo-Html -As List -Property status,version,name,Manufacturer,InstallDate,LastBootUpTime -Fragment -PreContent "<h2>Operating System</h2>"
@@ -17,15 +17,13 @@ $hardware = Get-CimInstance CIM_ComputerSystem | ConvertTo-Html -As List -Proper
 
 $General = ConvertTo-HTML -Body "$name $os $bar $ip $bar $mac $bar $hardware $bar $user" -Title "General" -Head $header
 
-<#
-Utilisateurs:
--Nom
--dernière connection
--Description
--Privilèges
-#>
+################### USERS ###################
 
 $user = Get-LocalUser | Select * | ConvertTo-Html -As Table -Property FullName,Description,Enabled,LastLogon -Fragment -PreContent "<h2>Users :</h2>"
+
+
+
+################### Private life settings ###################
 
 <#
 Afficher les paramètres de la vie privée, par exemple : Wifi sense (si version
@@ -40,16 +38,23 @@ $Webcam = Get-PnpDevice -Class "Webcam" | select * | ConvertTo-Html -As Table -F
 
 $Private = ConvertTo-HTML -Body "$webcam" -Title "General" -Head $header
 
-<#
-Affichage des services à arrêter en application du principe de minimisation.
-#>
+################### Services To stop ###################
 
 $Services = Get-Process | where {$_.priorityclass -eq 'AboveNormal' -OR $_.priorityclass -eq 'high'} | ConvertTo-Html -As Table -Property Id,Name,priorityclass -Fragment -PreContent "<h2>Process To stop :</h2>"
+
+################### HARDENING ###################
 
 <#Durcissement#>
 <#
 Durcissement de la couche réseau, protocole TLS et paramètres de cryptographie.
 #>
+
+################### HARDENING Network ###################
+
+################### HARDENING TLS ###################
+
+################### HARDENING Crypto setings ###################
+
 
 
 <#HTML#>
