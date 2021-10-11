@@ -50,8 +50,15 @@ Durcissement de la couche réseau, protocole TLS et paramètres de cryptographie
 #>
 
 ################### HARDENING Network ###################
+# source https://www.upguard.com/blog/the-windows-server-hardening-checklist
 
-################### HARDENING TLS ###################
+
+
+
+################### ENABELING TLS ###################
+#source https://docs.microsoft.com/en-us/mem/configmgr/core/plan-design/security/enable-tls-1-2-client
+
+
 
 ################### HARDENING Crypto setings ###################
 
