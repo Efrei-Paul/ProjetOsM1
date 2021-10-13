@@ -61,11 +61,9 @@ Durcissement de la couche réseau, protocole TLS et paramètres de cryptographie
 
 ################### HARDENING Network ###################
 # source https://www.upguard.com/blog/the-windows-server-hardening-checklist
+# https://media.defense.gov/2020/Aug/18/2002479461/-1/-1/0/HARDENING_NETWORK_DEVICES.PDF
 
 
-
-
-################### ENABELING TLS ###################
 
 Write-Host '#####################################'
 Write-Host '########## Disabling SSLv2 ##########'
@@ -132,6 +130,12 @@ net accounts /minpwage:1
 
 #Minimum length of password: 8 char
 net accounts /minpwlen:6
+
+
+########################################################
+##################### HTML AND CSS #####################
+########################################################
+
 
 <#HTML#>
 $bar = "<hr class='separator separator--line' />"
