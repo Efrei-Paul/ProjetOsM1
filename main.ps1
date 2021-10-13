@@ -4,8 +4,9 @@ Composants redondants
 $compname = (Get-CimInstance -ClassName Win32_ComputerSystem).name
 $Date = Get-Date
 
-
+############################################################
 ################### GENERAL Informations ###################
+############################################################
 
 
 $name = "<h1>Computer name: $compname</h1>"
@@ -17,14 +18,16 @@ $hardware = Get-CimInstance CIM_ComputerSystem | ConvertTo-Html -As List -Proper
 
 $General = ConvertTo-HTML -Body "$name $os $bar $ip $bar $mac $bar $hardware $bar $user" -Title "General" -Head $header
 
+#############################################
 ################### USERS ###################
+#############################################
 
 $user = Get-LocalUser | Select * | ConvertTo-Html -As Table -Property FullName,Description,Enabled,LastLogon -Fragment -PreContent "<h2>Users :</h2>"
 
 
-
+#############################################################
 ################### Private life settings ###################
-
+#############################################################
 <#
 Afficher les paramètres de la vie privée, par exemple : Wifi sense (si version
 Windowsinférieure à 1709), SmartScreen Filter dans Edge, suggestions du menu de
@@ -38,16 +41,23 @@ $Webcam = Get-PnpDevice -Class "Webcam" | select * | ConvertTo-Html -As Table -F
 
 $Private = ConvertTo-HTML -Body "$webcam" -Title "General" -Head $header
 
+
+########################################################
 ################### Services To stop ###################
+########################################################
 
 $Services = Get-Process | where {$_.priorityclass -eq 'AboveNormal' -OR $_.priorityclass -eq 'high'} | ConvertTo-Html -As Table -Property Id,Name,priorityclass -Fragment -PreContent "<h2>Process To stop :</h2>"
 
+
+#################################################
 ################### HARDENING ###################
+#################################################
 
 <#Durcissement#>
 <#
 Durcissement de la couche réseau, protocole TLS et paramètres de cryptographie.
 #>
+
 
 ################### HARDENING Network ###################
 # source https://www.upguard.com/blog/the-windows-server-hardening-checklist
@@ -58,6 +68,25 @@ Durcissement de la couche réseau, protocole TLS et paramètres de cryptographie
 ################### ENABELING TLS ###################
 #source https://docs.microsoft.com/en-us/mem/configmgr/core/plan-design/security/enable-tls-1-2-client
 
+#TLS 1.1
+
+New-Item 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Server' -Force
+New-Item 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Client' -Force
+New-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Server' -name 'Enabled' -value '1' –PropertyType 'DWORD'
+New-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Server' -name 'DisabledByDefault' -value '0' –PropertyType 'DWORD'
+New-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Client' -name 'Enabled' -value '1' –PropertyType 'DWORD'
+New-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Client' -name 'DisabledByDefault' -value '0' –PropertyType 'DWORD'
+Write-Host 'Enabling TLSv1.1'
+
+
+#TLS 1.2
+New-Item 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Server' -Force
+New-Item 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Client' -Force
+New-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Server' -name 'Enabled' -value '1' –PropertyType 'DWORD'
+New-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Server' -name 'DisabledByDefault' -value '0' –PropertyType 'DWORD'
+New-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Client' -name 'Enabled' -value '1' –PropertyType 'DWORD'
+New-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Client' -name 'DisabledByDefault' -value '0' –PropertyType 'DWORD'
+Write-Host 'Enabling TLSv1.2'
 
 
 ################### HARDENING Crypto setings ###################
