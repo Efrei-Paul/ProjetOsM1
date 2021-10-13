@@ -200,4 +200,4 @@ $header = @"
 "@
 
 $Report = ConvertTo-HTML -Body "$General $Users $Private $Services" -Title "Report - $Date" -Head $header
-$Report | Out-File C:\Users\clemg\Report.html
+$Report | Out-File C:\Users\user\Report.html
