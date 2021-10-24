@@ -1,6 +1,0 @@
-https://adamtheautomator.com/html-report/
-https://power-shell.blogspot.com/2011/10/convertto-html.html
-
-
-https://github.com/cutaway-security/chaps/blob/master/chaps.ps1
-& https://securityonline.info/configuration-hardening-assessment-powershell-script/

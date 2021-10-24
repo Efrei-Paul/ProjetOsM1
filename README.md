@@ -26,3 +26,6 @@ ou l’autre) et utiliser des couleurs pour faciliter la lecture du résultat.
 Afin de connaitre les bonnes pratiques, chercher les documents de références nécessaires
 (ANSSI, NIST, CIS, ENISA, …etc).
 Ce travail est à rendre sur Moodle à l’échéance indiquée.
+
+Il est important de noter que le chemin ecrit dans la derniere ligne correspont a celui ou l'on souhaite sauvegarder le rapport.
+Il doit donc être changé pour que le script fonctionne sur d'autres machines.
