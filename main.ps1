@@ -1,4 +1,12 @@
 <#
+Projet : Durcissement et audit du système Windows 10
+BEAU Mathis
+BODIN Simon
+CABON Paul
+GANDOIS Clément
+#>
+
+<#
 Composants redondants
 #>
 $compname = (Get-CimInstance -ClassName Win32_ComputerSystem).name
@@ -7,7 +15,9 @@ $Date = Get-Date
 ############################################################
 ################### GENERAL Informations ###################
 ############################################################
-
+<#
+Affichage des informations générale sur la station : matériel, Bios, version OS, …
+#>
 
 $name = "<h1>Computer name: $compname</h1>"
 
@@ -21,6 +31,11 @@ $General = ConvertTo-HTML -Body "$name $os $bar $ip $bar $mac $bar $hardware $ba
 #############################################
 ################### USERS ###################
 #############################################
+<#
+Affichage des informations sur les comptes locaux (privilèges attribués à chaque
+utilisateur, date de la dernière connexion, …etc) et vérification des paramètres des
+comptes (définition d’un mot de passe, age du mot de passe, …etc).
+#>
 
 $user = Get-LocalUser | Select * | ConvertTo-Html -As Table -Property FullName,Description,Enabled,LastLogon -Fragment -PreContent "<h2>Users :</h2>"
 
@@ -45,6 +60,9 @@ $Private = ConvertTo-HTML -Body "$webcam" -Title "General" -Head $header
 ########################################################
 ################### Services To stop ###################
 ########################################################
+<# 
+Affichage des services à arrêter en application du principe de minimisation.
+#>
 
 $Services = Get-Process | where {$_.priorityclass -eq 'AboveNormal' -OR $_.priorityclass -eq 'high'} | ConvertTo-Html -As Table -Property Id,Name,priorityclass -Fragment -PreContent "<h2>Process To stop :</h2>"
 
@@ -52,8 +70,6 @@ $Services = Get-Process | where {$_.priorityclass -eq 'AboveNormal' -OR $_.prior
 #################################################
 ################### HARDENING ###################
 #################################################
-
-<#Durcissement#>
 <#
 Durcissement de la couche réseau, protocole TLS et paramètres de cryptographie.
 #>
@@ -135,7 +151,9 @@ net accounts /minpwlen:6
 ########################################################
 ##################### HTML AND CSS #####################
 ########################################################
-
+<#
+Mise en page et mise en forme du fichier final
+#>
 
 <#HTML#>
 $bar = "<hr class='separator separator--line' />"
