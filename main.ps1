@@ -52,20 +52,19 @@ et microphone, …etc.
 #>
 
 $Webcam = Get-PnpDevice -Class "Webcam" | select * | ConvertTo-Html -As Table -Fragment -PreContent "<h3>Webcam :</h3>"
-$AdvertisingID = Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo" | ConvertTo-Html 
-$DiagnosticsTrackingService = Get-Service "DiagTrack" | ConvertTo-Html 
-$SuggestionsMenuDemarrage = Get-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SystemPaneSuggestionsEnabled" | ConvertTo-Html 
-$Localisation1 = Get-Item -Path "HKLM:\System\CurrentControlSet\Services\lfsvc\Service\Configuration" | ConvertTo-Html 
-$Localisation2 =  Get-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Sensor\Overrides\{BFA794E4-F964-4FDB-90F6-51056BFE4B44}" | ConvertTo-Html 
-$WifiSense = Get-ItemProperty -Path "HKLM:\Software\Microsoft\PolicyManager\default\Wifi\AllowAutoConnectToWiFiSenseHotspots\" | ConvertTo-Html 
+$AdvertisingID = Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo" | ConvertTo-Html -As Table -Fragment -PreContent "<h3>Advertising ID :</h3>"
+$DiagnosticsTrackingService = Get-Service "DiagTrack" | ConvertTo-Html
+$SuggestionsMenuDemarrage = Get-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SystemPaneSuggestionsEnabled" | ConvertTo-Html -As Table -Fragment -PreContent "<h3>Tracking services :</h3>"
+$Localisation = Get-Item -Path "HKLM:\System\CurrentControlSet\Services\lfsvc\Service\Configuration" | ConvertTo-Html -As Table -Fragment -PreContent "<h3>Suggestion Booting Menue:</h3>"
+$WifiSense = Get-ItemProperty -Path "HKLM:\Software\Microsoft\PolicyManager\default\Wifi\AllowAutoConnectToWiFiSenseHotspots\" | ConvertTo-Html
 
-$Private = ConvertTo-HTML -Body "$webcam" -Title "General" -Head $header
+$Private = ConvertTo-HTML -Body "$webcam $AdvertisingID $DiagnosticsTrackingService $SuggestionsMenuDemarrage $Localisation $WifiSense" -Title "General" -Head $header
 
 
 ########################################################
 ################### Services To stop ###################
 ########################################################
-<# 
+<#
 Affichage des services à arrêter en application du principe de minimisation.
 #>
 
