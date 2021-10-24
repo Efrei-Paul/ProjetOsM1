@@ -53,10 +53,10 @@ et microphone, …etc.
 
 $Webcam = Get-PnpDevice -Class "Webcam" | select * | ConvertTo-Html -As Table -Fragment -PreContent "<h3>Webcam :</h3>"
 $AdvertisingID = Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo" | ConvertTo-Html -As Table -Fragment -PreContent "<h3>Advertising ID :</h3>"
-$DiagnosticsTrackingService = Get-Service "DiagTrack" | ConvertTo-Html
-$SuggestionsMenuDemarrage = Get-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SystemPaneSuggestionsEnabled" | ConvertTo-Html -As Table -Fragment -PreContent "<h3>Tracking services :</h3>"
-$Localisation = Get-Item -Path "HKLM:\System\CurrentControlSet\Services\lfsvc\Service\Configuration" | ConvertTo-Html -As Table -Fragment -PreContent "<h3>Suggestion Booting Menue:</h3>"
-$WifiSense = Get-ItemProperty -Path "HKLM:\Software\Microsoft\PolicyManager\default\Wifi\AllowAutoConnectToWiFiSenseHotspots\" | ConvertTo-Html
+$DiagnosticsTrackingService = Get-Service "DiagTrack" | ConvertTo-Html -As Table -Fragment -PreContent "<h3>Tracking services :</h3>"
+$SuggestionsMenuDemarrage = Get-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SystemPaneSuggestionsEnabled" | ConvertTo-Html -As Table -Fragment -PreContent "<h3>Suggestion Booting Menue:</h3>"
+$Localisation = Get-Item -Path "HKLM:\System\CurrentControlSet\Services\lfsvc\Service\Configuration" | ConvertTo-Html -As Table -Fragment -PreContent "<h3>Localisation :</h3>"
+$WifiSense = Get-ItemProperty -Path "HKLM:\Software\Microsoft\PolicyManager\default\Wifi\AllowAutoConnectToWiFiSenseHotspots\" | ConvertTo-Html -As Table -Fragment -PreContent "<h3>Configuration Wifi :</h3>"
 
 $Private = ConvertTo-HTML -Body "$webcam $AdvertisingID $DiagnosticsTrackingService $SuggestionsMenuDemarrage $Localisation $WifiSense" -Title "General" -Head $header
 
@@ -182,7 +182,13 @@ $header = @"
 
     }
 
+    h3 {
 
+        font-family: Arial, Helvetica, sans-serif;
+        color: #000099;
+        font-size: 12px;
+
+    }
 
    table {
 		font-size: 12px;
